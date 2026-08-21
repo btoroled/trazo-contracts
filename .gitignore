@@ -1,0 +1,17 @@
+node_modules/
+artifacts/
+cache/
+coverage/
+dist/
+types/
+
+.env*
+!.env.example
+
+*.pem
+*.key
+*.p12
+*.pfx
+
+.DS_Store
+*.log
