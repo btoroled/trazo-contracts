@@ -1,7 +1,6 @@
 import { expect } from "chai";
 import { network } from "hardhat";
-
-import type { CustodyLedger } from "../types/ethers-contracts/index.js";
+import type { EventLog } from "ethers";
 
 const { ethers } = await network.create();
 
@@ -22,10 +21,8 @@ const hashShipmentId = (shipmentId: string) =>
 const documentHash = (seed: string) =>
   ethers.keccak256(ethers.toUtf8Bytes(seed));
 
-async function deployLedger(): Promise<CustodyLedger> {
-  return (await ethers.deployContract(
-    "CustodyLedger",
-  )) as unknown as CustodyLedger;
+async function deployLedger() {
+  return ethers.deployContract("CustodyLedger");
 }
 
 describe("CustodyLedger", function () {
@@ -79,7 +76,7 @@ describe("CustodyLedger", function () {
     }
 
     const filter = ledger.filters.CustodyEventRecorded(shipmentIdHash);
-    const logs = await ledger.queryFilter(filter);
+    const logs = (await ledger.queryFilter(filter)) as EventLog[];
 
     expect(logs.map((log) => Number(log.args.eventType))).to.deep.equal(
       sequence,
@@ -116,9 +113,9 @@ describe("CustodyLedger", function () {
       documentHash("a2"),
     );
 
-    const logsA = await ledger.queryFilter(
+    const logsA = (await ledger.queryFilter(
       ledger.filters.CustodyEventRecorded(hashA),
-    );
+    )) as EventLog[];
 
     expect(logsA).to.have.lengthOf(2);
     expect(logsA.every((log) => log.args.shipmentId === shipmentA)).to.equal(
@@ -151,12 +148,12 @@ describe("CustodyLedger", function () {
       documentHash("a"),
     );
 
-    const rejected = await ledger.queryFilter(
+    const rejected = (await ledger.queryFilter(
       ledger.filters.CustodyEventRecorded(
         undefined,
         EventType.CUSTOMS_REJECTED,
       ),
-    );
+    )) as EventLog[];
 
     expect(rejected).to.have.lengthOf(1);
     expect(Number(rejected[0].args.eventType)).to.equal(
@@ -179,9 +176,9 @@ describe("CustodyLedger", function () {
       );
     }
 
-    const logs = await ledger.queryFilter(
+    const logs = (await ledger.queryFilter(
       ledger.filters.CustodyEventRecorded(shipmentIdHash),
-    );
+    )) as EventLog[];
     const timestamps = logs.map((log) => log.args.timestamp as bigint);
 
     for (let i = 1; i < timestamps.length; i++) {
