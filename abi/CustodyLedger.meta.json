@@ -1,0 +1,6 @@
+{
+  "contractName": "CustodyLedger",
+  "sourceCommit": "e0042e79bf7626e59fd06d1dca10d6498ed20530",
+  "custodyEventSignature": "CustodyEventRecorded(bytes32,uint8,address,uint256,bytes32,string)",
+  "exportedAt": "2026-08-25T14:27:08.896Z"
+}

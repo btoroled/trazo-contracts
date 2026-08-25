@@ -10,6 +10,7 @@
   },
   "scripts": {
     "compile": "hardhat compile",
+    "export:abi": "hardhat compile && hardhat run scripts/export-abi.ts",
     "test": "hardhat test",
     "node": "hardhat node",
     "deploy:local": "hardhat run scripts/deploy-local.ts --network localhost",
