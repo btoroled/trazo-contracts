@@ -1,0 +1,73 @@
+[
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "shipmentIdHash",
+        "type": "bytes32"
+      },
+      {
+        "indexed": true,
+        "internalType": "enum CustodyLedger.EventType",
+        "name": "eventType",
+        "type": "uint8"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "actor",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "timestamp",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "bytes32",
+        "name": "documentHash",
+        "type": "bytes32"
+      },
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "shipmentId",
+        "type": "string"
+      }
+    ],
+    "name": "CustodyEventRecorded",
+    "type": "event"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "shipmentIdHash",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "string",
+        "name": "shipmentId",
+        "type": "string"
+      },
+      {
+        "internalType": "enum CustodyLedger.EventType",
+        "name": "eventType",
+        "type": "uint8"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "documentHash",
+        "type": "bytes32"
+      }
+    ],
+    "name": "recordEvent",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  }
+]

@@ -65,3 +65,20 @@ contrato no guarda storage por evento; solo emite.
 
 Copia `.env.example` a `.env` solo si vas a usar Amoy. Nunca publiques una clave
 privada real ni reutilices una cuenta de producción.
+
+## Deploy
+
+- **Local:** deja `pnpm node` corriendo (o `docker compose up hardhat` desde
+  `trazo-backend`) y ejecuta `pnpm deploy:local`. Escribe
+  `deployments/hardhat.json` (address/block/red) — es el artefacto que lee
+  `pnpm sync:contracts` en el backend (ADR-0012).
+- **Testnet (Amoy):** define `AMOY_RPC_URL` y `AMOY_PRIVATE_KEY` en `.env`
+  (nunca los commitees) y corre `pnpm deploy:testnet`. Si falta cualquiera de
+  las dos variables, Hardhat aborta con un error explícito indicando cuál
+  falta — no hay guard adicional necesario. Escribe `deployments/amoy.json`.
+  - RPC: usa un proveedor gratuito (p.ej. Alchemy/Infura Amoy) o el RPC
+    público de Polygon.
+  - Gas: la cuenta de `AMOY_PRIVATE_KEY` necesita MATIC de prueba — obténlo
+    del [faucet oficial de Polygon Amoy](https://faucet.polygon.technology/).
+  - `deployments/amoy.json` sí se commitea una vez hecho el deploy real
+    (mismo patrón que `hardhat.json`), pero nunca la clave privada.

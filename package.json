@@ -10,9 +10,11 @@
   },
   "scripts": {
     "compile": "hardhat compile",
+    "export:abi": "hardhat compile && hardhat run scripts/export-abi.ts",
     "test": "hardhat test",
     "node": "hardhat node",
     "deploy:local": "hardhat run scripts/deploy-local.ts --network localhost",
+    "deploy:testnet": "hardhat run scripts/deploy-testnet.ts --network amoy",
     "security:check": "pwsh -NoProfile -File scripts/check-secrets.ps1",
     "typecheck": "tsc --noEmit",
     "format": "prettier --write .",

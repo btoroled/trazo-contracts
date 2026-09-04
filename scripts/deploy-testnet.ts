@@ -1,8 +1,10 @@
 /**
- * TASK-045 — Deploy CustodyLedger to the local Hardhat node (docker/hardhat,
- * CHAIN_RPC_URL) and record where it landed. The backend's ChainClient
- * (TASK-050) and sync step (ADR-0012, TASK-047) read this file for the
- * address; `blockNumber` lets the backend bound its log-reconstruction scan.
+ * TASK-046 — Deploy CustodyLedger to Polygon Amoy (or another configured EVM
+ * testnet). Mirrors deploy-local.ts but targets the `amoy` network
+ * (hardhat.config.ts), whose RPC URL/private key come from `configVariable`
+ * (AMOY_RPC_URL / AMOY_PRIVATE_KEY) — Hardhat refuses to run and reports
+ * exactly which variable is missing if they aren't set, so no ad-hoc guard is
+ * needed here (spec's "falla claro si faltan env").
  */
 import { mkdirSync, writeFileSync } from "node:fs";
 import { join, resolve } from "node:path";
@@ -10,8 +12,9 @@ import { fileURLToPath } from "node:url";
 import { network } from "hardhat";
 
 const REPO_ROOT = resolve(fileURLToPath(import.meta.url), "../..");
+const NETWORK_NAME = "amoy";
 
-const { ethers } = await network.create({ network: "localhost" });
+const { ethers } = await network.create({ network: NETWORK_NAME });
 
 const ledger = await ethers.deployContract("CustodyLedger");
 await ledger.waitForDeployment();
@@ -24,7 +27,7 @@ if (!receipt) {
 }
 
 const deployment = {
-  network: "localhost",
+  network: NETWORK_NAME,
   address,
   blockNumber: receipt.blockNumber,
   deployedAt: new Date().toISOString(),
@@ -33,10 +36,10 @@ const deployment = {
 const outDir = join(REPO_ROOT, "deployments");
 mkdirSync(outDir, { recursive: true });
 writeFileSync(
-  join(outDir, "hardhat.json"),
+  join(outDir, `${NETWORK_NAME}.json`),
   `${JSON.stringify(deployment, null, 2)}\n`,
 );
 
 process.stdout.write(
-  `CustodyLedger deployed to ${address} (block ${deployment.blockNumber})\n`,
+  `CustodyLedger deployed to ${address} on ${NETWORK_NAME} (block ${deployment.blockNumber})\n`,
 );
